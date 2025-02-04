@@ -1,0 +1,3 @@
+output
+src/inputs/*
+!src/inputs/readme.md
