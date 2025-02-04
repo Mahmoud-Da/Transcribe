@@ -1,13 +1,14 @@
 #!/bin/bash
 
-# Check if a filename is provided
-if [ $# -eq 0 ]; then
-    echo "Usage: $0 <video_file>"
+# Check if a filename and language are provided
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <video_file> <language>"
     exit 1
 fi
 
-# Get the input video file
+# Get the input video file and language
 VIDEO_FILE="$1"
+LANGUAGE="$2"
 
 # Check if the file exists
 if [ ! -f "$VIDEO_FILE" ]; then
@@ -30,7 +31,7 @@ fi
 
 # Run Whisper transcription
 echo "📝 Transcribing audio..."
-whisper "$BASENAME.wav" --language English
+whisper "$BASENAME.wav" --language "$LANGUAGE"
 
 # Check if Whisper was successful
 if [ $? -ne 0 ]; then
@@ -43,3 +44,8 @@ echo "🗑️ Deleting audio file..."
 rm "$BASENAME.wav"
 
 echo "✅ Done! Check the transcript for '$BASENAME'."
+
+# Note: collect the output
+if [ -f "collect-files.sh" ]; then
+    ./collect-files.sh
+fi
